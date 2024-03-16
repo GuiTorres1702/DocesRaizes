@@ -87,7 +87,7 @@ filtered_data = dataframe[
 #----------------------------------Total de vendas---------------------------------------------------
 total_de_vendas = round(filtered_data["total"].sum(), 2)
 total_de_gastos = round(filtered_data["total_gastos"].sum(), 2)
-Lucro_total = round(filtered_data["Lucro total"].sum(),2)
+Lucro_total = round(total_de_vendas - total_de_gastos,2)
 #----------------------------------print total metrica-----------------------------------------------
 col1, col2, col3 = st.columns(3)
 col1.metric("Total de Vendas", total_de_vendas)
