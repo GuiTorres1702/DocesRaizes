@@ -5,6 +5,11 @@ import subprocess
 import tkinter as tk
 from tkinter import messagebox
 
+# Função para calcular o total gasto
+def calcular_total_gasto(dados):
+    total_gastos = sum(dado['total_gastos'] for dado in dados)
+    return total_gastos
+
 # Função principal
 def main():
     def salvar_dados():
@@ -24,9 +29,10 @@ def main():
         subprocess.run(["git", "commit", "-m", "Adicionando resultados à planilha"])
         subprocess.run(["git", "push", "origin", "main"])
 
-        messagebox.showinfo("Sucesso", "Dados salvos em Doces Raiz.csv e enviados para o repositório do GitHub.")
+        messagebox.showinfo("Sucesso", "Dados salvos em planilha.csv e enviados para o repositório do GitHub.")
 
     def adicionar_produto():
+        nonlocal id_produto  # Permite acessar a variável definida no escopo externo
         nome = entry_nome.get()
         preco = float(entry_preco.get())
         gasto = float(entry_gasto.get())
@@ -105,7 +111,7 @@ def main():
     id_produto = 1  # Inicializa o contador de ID
 
     # Verifica se o arquivo CSV já existe
-    arquivo_existente = os.path.isfile('Doce Raiz.csv')
+    arquivo_existente = os.path.isfile('planilha.csv')
 
     # Botão para salvar dados e enviar para o GitHub
     btn_salvar = tk.Button(root, text="Salvar Dados e Enviar para GitHub", command=salvar_dados)
