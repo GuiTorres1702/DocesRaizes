@@ -65,7 +65,7 @@ def main():
 
     # Inicialização da interface
     root = tk.Tk()
-    root.title("Cadastro de Produtos")
+    root.title("Cadastro de Produtos Doces Raizes")
 
     # Frame para o formulário de adição de produtos
     frame_formulario = tk.Frame(root)
