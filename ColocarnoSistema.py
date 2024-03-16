@@ -47,7 +47,7 @@ def main():
         total_gastos = gasto * quantidade
         
         dados.append({
-            'id': id_produto,  # Adiciona o ID do produto
+            'id': id,  # Adiciona o ID do produto
             'nome': nome,
             'preço': preco,
             'gasto': gasto,
@@ -58,7 +58,7 @@ def main():
             'parcerias': parcerias
         })
 
-        id_produto += 1  # Incrementa o contador de ID
+        id += 1  # Incrementa o contador de ID
 
         messagebox.showinfo("Produto Adicionado", "Produto adicionado com sucesso.")
 
@@ -107,7 +107,7 @@ def main():
 
     # Dados
     dados = []
-    id_produto = 1  # Inicializa o contador de ID
+    id = 1  # Inicializa o contador de ID
 
     # Verifica se o arquivo CSV já existe
     arquivo_existente = os.path.isfile('Doce Raiz.csv')
