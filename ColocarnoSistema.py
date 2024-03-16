@@ -5,11 +5,6 @@ import subprocess
 import tkinter as tk
 from tkinter import messagebox
 
-# Função para calcular o total gasto
-def calcular_total_gasto(dados):
-    total_gastos = sum(dado['total_gastos'] for dado in dados)
-    return total_gastos
-
 # Função principal
 def main():
     def salvar_dados():
@@ -25,11 +20,11 @@ def main():
                 writer.writerow(dado)
 
         # Adiciona, commita e faz push das mudanças para o repositório do GitHub
-        subprocess.run(["git", "add", "Doce Raiz.csv"])
+        subprocess.run(["git", "add", "planilha.csv"])
         subprocess.run(["git", "commit", "-m", "Adicionando resultados à planilha"])
         subprocess.run(["git", "push", "origin", "main"])
 
-        messagebox.showinfo("Sucesso", "Dados salvos em planilha.csv e enviados para o repositório do GitHub.")
+        messagebox.showinfo("Sucesso", "Dados salvos em Doces Raiz.csv e enviados para o repositório do GitHub.")
 
     def adicionar_produto():
         nome = entry_nome.get()
@@ -47,7 +42,7 @@ def main():
         total_gastos = gasto * quantidade
         
         dados.append({
-            'id': id,  # Adiciona o ID do produto
+            'id': id_produto,  # Adiciona o ID do produto
             'nome': nome,
             'preço': preco,
             'gasto': gasto,
@@ -58,7 +53,7 @@ def main():
             'parcerias': parcerias
         })
 
-        id += 1  # Incrementa o contador de ID
+        id_produto += 1  # Incrementa o contador de ID
 
         messagebox.showinfo("Produto Adicionado", "Produto adicionado com sucesso.")
 
@@ -107,7 +102,7 @@ def main():
 
     # Dados
     dados = []
-    id = 1  # Inicializa o contador de ID
+    id_produto = 1  # Inicializa o contador de ID
 
     # Verifica se o arquivo CSV já existe
     arquivo_existente = os.path.isfile('Doce Raiz.csv')
