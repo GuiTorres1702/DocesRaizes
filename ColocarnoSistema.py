@@ -14,7 +14,7 @@ def calcular_total_gasto(dados):
 def main():
     def salvar_dados():
         # Salvar dados em um arquivo CSV
-        with open('planilha.csv', mode='a', newline='', encoding='utf-8') as file:
+        with open('Doce Raiz.csv', mode='a', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=['id','nome','preço','gasto','data','quantidade','total','total_gastos','parcerias'])
 
             # Escreve o cabeçalho apenas se o arquivo estiver vazio
@@ -25,11 +25,11 @@ def main():
                 writer.writerow(dado)
 
         # Adiciona, commita e faz push das mudanças para o repositório do GitHub
-        subprocess.run(["git", "add", "planilha.csv"])
+        subprocess.run(["git", "add", "Doce Raiz.csv"])
         subprocess.run(["git", "commit", "-m", "Adicionando resultados à planilha"])
         subprocess.run(["git", "push", "origin", "main"])
 
-        messagebox.showinfo("Sucesso", "Dados salvos em planilha.csv e enviados para o repositório do GitHub.")
+        messagebox.showinfo("Sucesso", "Dados salvos em Doce Raiz.csv e enviados para o repositório do GitHub.")
 
     def adicionar_produto():
         nonlocal id_produto  # Permite acessar a variável definida no escopo externo
@@ -111,7 +111,7 @@ def main():
     id_produto = 1  # Inicializa o contador de ID
 
     # Verifica se o arquivo CSV já existe
-    arquivo_existente = os.path.isfile('planilha.csv')
+    arquivo_existente = os.path.isfile('Doce Raiz.csv')
 
     # Botão para salvar dados e enviar para o GitHub
     btn_salvar = tk.Button(root, text="Salvar Dados e Enviar para GitHub", command=salvar_dados)
