@@ -74,7 +74,7 @@ def main():
 
     # Adiciona, commita e faz push das mudanças para o repositório do GitHub
     subprocess.run(["git", "add", "Doce Raiz.csv"])
-    subprocess.run(["git", "commit", "-m"])
+    subprocess.run(["git", "commit", "-m", "'Adicionando resultados à planilha'"])
     subprocess.run(["git", "push", "origin", "main"])
 
 if __name__ == "__main__":
