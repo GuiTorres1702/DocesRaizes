@@ -1,81 +1,113 @@
 import csv
 from datetime import datetime
 import os.path
-import subprocess
+import tkinter as tk
+from tkinter import messagebox
+from tkinter import ttk
+from git import Repo
 
 # Função para calcular o total gasto
-def calcular_total_gasto(dados):
-    total_gastos = sum(dado['total_gastos'] for dado in dados)
-    return total_gastos
+def calcular_total_gasto(preco, gasto, quantidade):
+    return preco * quantidade, gasto * quantidade
 
-# Função principal
-def main():
-    dados = []
-    id_produto = 1  # Inicializa o contador de ID
+# Função para atualizar a tabela
+def atualizar_tabela():
+    tree.delete(*tree.get_children())
+    for produto in dados:
+        tree.insert('', 'end', values=(produto['id'], produto['nome'], produto['preço'], produto['gasto'], produto['data'], produto['quantidade'], produto['total'], produto['total_gastos'], produto['parcerias']))
 
-    # Verifica se o arquivo CSV já existe
-    arquivo_existente = os.path.isfile('Doce Raiz.csv')
+# Função para adicionar um produto
+def adicionar_produto():
+    nome = entry_nome.get()
+    preco = float(entry_preco.get())
+    gasto = float(entry_gasto.get())
+    data_input = entry_data.get()
+    quantidade = int(entry_quantidade.get())
+    parcerias = entry_parcerias.get()
 
-    if arquivo_existente:
-        # Se o arquivo já existe, carrega os dados existentes
-        with open('Doce Raiz.csv', mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                dados.append(row)
-            # Define o próximo ID a ser utilizado
-            id_produto = int(dados[-1]['id']) + 1
+    # Analisar a data e formatá-la como DD-MM-AAAA
+    data = datetime.strptime(data_input, '%d%m%Y').strftime('%d-%m-%Y')
 
-    continuar = True
-    while continuar:
-        nome = input("Digite o nome do produto: ")
-        preco = float(input("Digite o preço do produto: "))
-        gasto = float(input("Digite o gasto com o produto: "))
-        data_input = input("Digite a data da compra (DDMMAAAA): ")
+    total, total_gastos = calcular_total_gasto(preco, gasto, quantidade)
+    
+    dados.append({
+        'id': len(dados) + 1,  # Adiciona o ID do produto
+        'nome': nome,
+        'preço': preco,
+        'gasto': gasto,
+        'data': data,
+        'quantidade': quantidade,
+        'total': total,
+        'total_gastos': total_gastos,
+        'parcerias': parcerias
+    })
 
-        # Analisar a data e formatá-la como DD-MM-AAAA
-        data = datetime.strptime(data_input, '%d%m%Y').strftime('%d-%m-%Y')
+    atualizar_tabela()
+    limpar_campos()
 
-        quantidade = int(input("Digite a quantidade comprada: "))
-        parcerias = input("Digite as parcerias (separadas por vírgula): ")
+# Função para limpar os campos de entrada após adicionar um produto
+def limpar_campos():
+    entry_nome.delete(0, tk.END)
+    entry_preco.delete(0, tk.END)
+    entry_gasto.delete(0, tk.END)
+    entry_data.delete(0, tk.END)
+    entry_quantidade.delete(0, tk.END)
+    entry_parcerias.delete(0, tk.END)
 
-        total = preco * quantidade
-        total_gastos = gasto * quantidade
-        
-        dados.append({
-            'id': id_produto,  # Adiciona o ID do produto
-            'nome': nome,
-            'preço': preco,
-            'gasto': gasto,
-            'data': data,
-            'quantidade': quantidade,
-            'total': total,
-            'total_gastos': total_gastos,
-            'parcerias': parcerias
-        })
+# Função para enviar as mudanças para o repositório do GitHub
+def enviar_mudancas():
+    repo = Repo('/caminho/para/o/repo/do/github')
+    repo.git.add('Doce Raiz.csv')
+    repo.index.commit('Adicionando resultados à planilha')
+    origin = repo.remote(name='origin')
+    origin.push()
 
-        id_produto += 1  # Incrementa o contador de ID
+# Criar uma janela principal
+root = tk.Tk()
+root.title("Cadastro de Produtos")
 
-        continuar_input = input("Deseja inserir mais um produto? (s/n): ")
-        if continuar_input.lower() != 's':
-            continuar = False
+# Criar campos de entrada para os dados do produto
+tk.Label(root, text="Nome:").grid(row=0, column=0)
+entry_nome = tk.Entry(root)
+entry_nome.grid(row=0, column=1)
 
-    # Salvar dados em um arquivo CSV
-    with open('Doce Raiz.csv', mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=['id','nome','preço','gasto','data','quantidade','total','total_gastos','parcerias'])
+tk.Label(root, text="Preço:").grid(row=1, column=0)
+entry_preco = tk.Entry(root)
+entry_preco.grid(row=1, column=1)
 
-        # Escreve o cabeçalho apenas se o arquivo estiver vazio
-        if not arquivo_existente:
-            writer.writeheader()
+tk.Label(root, text="Gasto:").grid(row=2, column=0)
+entry_gasto = tk.Entry(root)
+entry_gasto.grid(row=2, column=1)
 
-        for dado in dados:
-            writer.writerow(dado)
+tk.Label(root, text="Data (DDMMAAAA):").grid(row=3, column=0)
+entry_data = tk.Entry(root)
+entry_data.grid(row=3, column=1)
 
-    print("Dados salvos em Doce Raiz.csv")
+tk.Label(root, text="Quantidade:").grid(row=4, column=0)
+entry_quantidade = tk.Entry(root)
+entry_quantidade.grid(row=4, column=1)
 
-    # Adiciona, commita e faz push das mudanças para o repositório do GitHub
-    subprocess.run(["git", "add", "Doce Raiz.csv"])
-    subprocess.run(["git", "commit", "-m", "'Adicionando resultados à planilha'"])
-    subprocess.run(["git", "push", "origin", "main"])
+tk.Label(root, text="Parcerias:").grid(row=5, column=0)
+entry_parcerias = tk.Entry(root)
+entry_parcerias.grid(row=5, column=1)
 
-if __name__ == "__main__":
-    main()
+# Botão para adicionar produto
+button_adicionar = tk.Button(root, text="Adicionar Produto", command=adicionar_produto)
+button_adicionar.grid(row=6, column=0)
+
+# Botão para enviar mudanças para o GitHub
+button_enviar = tk.Button(root, text="Enviar para GitHub", command=enviar_mudancas)
+button_enviar.grid(row=6, column=1)
+
+# Criar uma tabela para exibir os dados dos produtos
+columns = ('ID', 'Nome', 'Preço', 'Gasto', 'Data', 'Quantidade', 'Total', 'Total Gastos', 'Parcerias')
+tree = ttk.Treeview(root, columns=columns, show='headings')
+for col in columns:
+    tree.heading(col, text=col)
+tree.grid(row=7, column=0, columnspan=2)
+
+# Lista para armazenar os dados dos produtos
+dados = []
+
+# Iniciar o loop principal da interface gráfica
+root.mainloop()
