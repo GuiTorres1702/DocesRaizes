@@ -1,2 +1,4 @@
 id,nome,preço,gasto,data,quantidade,total,total_gastos,parcerias
 1,Ovo de chocolate,37.99,20.0,05-05-2024,15,569.85,300.0,3
+1,Ovo de chocolate,37.99,20.0,05-05-2024,15,569.85,300.0,3
+2,ovo de morango,20.0,10.0,16-03-2024,25,500.0,250.0,5
