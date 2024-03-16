@@ -87,12 +87,12 @@ filtered_data = dataframe[
 #----------------------------------Total de vendas---------------------------------------------------
 total_de_vendas = round(filtered_data["total"].sum(), 2)
 total_de_gastos = round(filtered_data["total_gastos"].sum(), 2)
-
+Lucro_total = round(filtered_data["Lucro total"].sum(),2)
 #----------------------------------print total metrica-----------------------------------------------
 col1, col2, col3 = st.columns(3)
 col1.metric("Total de Vendas", total_de_vendas)
 col2.metric("Total de Gastos", total_de_gastos)
-col3.metric("Lucro total", total_de_vendas - total_de_gastos:.2f)
+col3.metric("Lucro total", Lucro_total)
 
 # ---------------------------------Visual do site TxT-------------------------------------------------
 st.header("📉Analise de Lucros - Doces Raizes🍬")
