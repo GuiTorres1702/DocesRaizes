@@ -1,0 +1,1 @@
+start /B """"DocesRaizes\dist\CadastroDocesRaizes\CadastroDocesRaizes.exe""
