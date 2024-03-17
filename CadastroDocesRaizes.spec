@@ -31,7 +31,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['DoceRaiz.ico'],
 )
 coll = COLLECT(
     exe,
