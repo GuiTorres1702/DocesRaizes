@@ -4,6 +4,7 @@ import os.path
 import subprocess
 import tkinter as tk
 from tkinter import messagebox
+import subprocess
 
 # Função para calcular o total gasto
 def calcular_total_gasto(dados):
@@ -116,6 +117,10 @@ def main():
     # Botão para salvar dados e enviar para o GitHub
     btn_salvar = tk.Button(root, text="Salvar Dados e Enviar para GitHub", command=salvar_dados)
     btn_salvar.pack(pady=10)
+
+    # Oculta o terminal durante a execução
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
     root.mainloop()
 
